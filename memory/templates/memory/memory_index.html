@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html> 
+<html> 
+<head> 
+<title>基于Jquery的瀑布流布局（绝对定位）</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+body{margin:0;padding:0}
+ul{position:relative}
+li{width:250px;border:1px solid #ccc;border-radius:5px;list-style:none;position:absolute;margin:10px;background:#CCC}
+ul li p{font-size:12px;word-break:break-all;word-wrap:break-word;}
+li.a {height:350px;}
+li.b {height:200px;}
+li.hide{opacity:0}
+</style>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/memory/setwaterfall.js"></script>
+<script>
+$(function(){
+	$("li").setwaterfall();
+	var page = 0;      //显示第几页
+	var pagesize = 20;  //每页显示数量
+	$(window).bind("scroll",function () {
+		var clienth = document.documentElement.clientHeight;  //屏幕高度
+		var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //滚动高度
+		var scrollh = document.documentElement.scrollHeight;  //页面高度
+		if (clienth + scrollt >= scrollh - 20 ) {
+			jQuery.DataLoad();
+		}
+	});
+	
+	jQuery.DataLoad = function(){
+		$.ajax({
+			url: "http://www.wookmark.com/api/json/popular",   //测试地址,返回JSON数据
+			dataType: 'jsonp',
+			data: {page: page},
+			beforeSend: function(){ $("#loading").fadeIn(400); },
+			success: function(data){
+			  page++;
+			  var html = "";
+			  for(i=0;i<pagesize;i++) {
+				html += "<li class='hide'>";
+				html += "<img src="+data[i].preview+" width='250' height="+Math.round(data[i].height/data[i].width*250)+">";
+				html += "<p>"+data[i].title+"</p>";						
+				html += "</li>";
+			  }
+			    $("#loading").hide();
+				$("ul").append(html);
+				$("li").setwaterfall();
+				$(".hide").animate({opacity:1},2000);
+			}
+		});
+	}	
+});
+</script>
+</head> 
+<body> {{ MEDIA_URL }}{{ MEDIA_URL }}{{ MEDIA_URL }}.....{{ MEDIA_URL }}{{ MEDIA_URL }}{{ MEDIA_URL }}
+
+<ul>
+<li id="b" class="a"><img src=" media/{{thumb_url}}"></li>
+<li id="c" class="b"></li>
+<li id="b" class="a"></li>
+<li id="c" class="b"></li>
+<li id="b" class="a"></li>
+<li id="c" class="b"></li>
+<li id="b" class="a"></li>
+<li id="c" class="b"></li>
+<li id="b" class="a"></li>
+<li id="c" class="b"></li>
+<li id="b" class="a"></li>
+<li id="c" class="b"></li>
+<li id="b" class="a"></li>
+<li id="c" class="b"></li>
+<li id="b" class="a"></li>
+<li id="c" class="b"></li>
+</ul>
+<div style="display:none;background:#CCC;color:#333;margin:20px 0;height:30px;text-align:center;font:bold 15px/30px '宋体'" id="loading">努力加载中，请稍后...</div>
+</body>
+</html>
