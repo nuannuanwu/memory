@@ -35,16 +35,105 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+try:
+    import sae.const
+except:
+    pass
+from os import environ
+#根据环境定义数据库连接参数
+islocalhost = not environ.get("APP_NAME","")
+
+if islocalhost:
+    mysql_name = 'memory'
+    mysql_user = 'root'
+    mysql_pass = ''
+    mysql_host = '127.0.0.1'
+    mysql_port = '3306'
+    mysql_host_s = '127.0.0.1'
+    DEBUG = True
+else:#sae上
+    mysql_name = sae.const.MYSQL_DB
+    mysql_user = sae.const.MYSQL_USER
+    mysql_pass = sae.const.MYSQL_PASS
+    mysql_host = sae.const.MYSQL_HOST
+    mysql_port = sae.const.MYSQL_PORT
+    mysql_host_s = sae.const.MYSQL_HOST_S
+    DEBUG = True
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'memory',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
-    }
+    "default": {
+        # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
+        "ENGINE": "django.db.backends.mysql",
+        # DB name or path to database file if using sqlite3.
+        "NAME": mysql_name,
+        # Not used with sqlite3.
+        "USER": mysql_user,
+        # Not used with sqlite3.
+        "PASSWORD": mysql_pass,
+        # Set to empty string for localhost. Not used with sqlite3.
+        "HOST": mysql_host,
+        # Set to empty string for default. Not used with sqlite3.
+        "PORT": mysql_port,
+    },
+    "master": {
+        # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
+        "ENGINE": "django.db.backends.mysql",
+        # DB name or path to database file if using sqlite3.
+        "NAME": mysql_name,
+        # Not used with sqlite3.
+        "USER": mysql_user,
+        # Not used with sqlite3.
+        "PASSWORD": mysql_pass,
+        # Set to empty string for localhost. Not used with sqlite3.
+        "HOST": mysql_host,
+        # Set to empty string for default. Not used with sqlite3.
+        "PORT": mysql_port,
+    },
+    "slave": {
+        # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
+        "ENGINE": "django.db.backends.mysql",
+        # DB name or path to database file if using sqlite3.
+        "NAME": mysql_name,
+        # Not used with sqlite3.
+        "USER": mysql_user,
+        # Not used with sqlite3.
+        "PASSWORD": mysql_pass,
+        # Set to empty string for localhost. Not used with sqlite3.
+        "HOST": mysql_host_s,
+        # Set to empty string for default. Not used with sqlite3.
+        "PORT": mysql_port,
+    }        
 }
+class DataBaseRouter(object):
+    """
+    A router to control all database operations.
+    """
+    def db_for_read(self, model,  *args, **kwargs):
+        """
+        Attempts to read.
+        """
+        return "slave"
+
+    def db_for_write(self, model,  *args, **kwargs):
+        """
+        Attempts to write .
+        """
+        return "master"
+       
+    def allow_relation(self, obj1, obj2, **hints):
+        "Allow any relation between two objects in the db pool"
+        db_list = ('master','slave')
+        if obj1._state.db in db_list and obj2._state.db in db_list:
+            return True
+        return None
+
+    def allow_syncdb(self, db, model):
+        "Explicitly put all models on all databases."
+        return True
+       
+       
+DATABASE_ROUTERS = [DataBaseRouter()]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
