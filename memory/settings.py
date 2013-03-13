@@ -12,8 +12,12 @@ PROJECT_DIR = os.path.abspath(os.path.dirname(APP_DIR))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 #
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
-print MEDIA_ROOT,'==================='
+
 MEDIA_URL = '/media/'
+
+THUMBNAIL_MEDIA_ROOT = MEDIA_ROOT + "thumb/"
+
+#THUMBNAIL_MEDIA_URL = MEDIA_URL 
 #
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
@@ -65,24 +69,6 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -127,7 +113,6 @@ WSGI_APPLICATION = 'memory.wsgi.application'
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 INSTALLED_APPS = (
-    'grappelli.dashboard',
     'grappelli',
     "django.contrib.admin",
     'django.contrib.auth',
@@ -157,6 +142,9 @@ THUMBNAIL_ALIASES = {
         "avatar_large": {'size':(192, 192)},
     },
 }
+
+THUMBNAIL_SUBDIR = "thumbs"
+THUMBNAIL_EXTENSION = "png"
 
 TEMPLATE_CONTEXT_PROCESSORS = (
    "django.contrib.auth.context_processors.auth",

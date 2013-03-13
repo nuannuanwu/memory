@@ -4,4 +4,4 @@ from django.db import models
 
 class Profile(models.Model):
     user = models.OneToOneField('auth.User')
-    photo = ThumbnailerImageField(upload_to='memory/media/photos', blank=True)
+    photo = ThumbnailerImageField(upload_to='photos', blank=True)
