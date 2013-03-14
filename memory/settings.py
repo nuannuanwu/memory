@@ -216,6 +216,9 @@ INSTALLED_APPS = (
     'memory',
     'easy_thumbnails',
     'debug_toolbar',
+    'oss',
+    'oss_extra',
+    'sae_extra',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -243,7 +246,7 @@ THUMBNAIL_ALIASES = {
     '': {
         'mini': {'size': (48, 48), 'crop': True},
         'small': {'size': (64, 64)},
-        'normal': {'size': (192, 0), 'crop': True},
+        'normal': {'size': (250, 0), 'crop': True},
         'big': {'size': (384, 0), 'crop': True},
         "large": {'size':(650,0)},
         "avatar": {'size':(64,64)},
@@ -254,6 +257,43 @@ THUMBNAIL_ALIASES = {
 
 THUMBNAIL_SUBDIR = "thumbs"
 THUMBNAIL_EXTENSION = "png"
+
+try:
+    if not islocalhost:
+        THUMBNAIL_DEFAULT_STORAGE = 'sae_extra.storage.SaeStorage'
+        DEFAULT_FILE_STORAGE =  'sae_extra.storage.SaeStorage'
+
+        CACHES = {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+                'LOCATION': '127.0.0.1:11211',
+                'TIMEOUT': 3600*24*30
+            },
+            'database': {
+                'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+                'LOCATION': 'django_cache',
+                'TIMEOUT': 3600*24*30
+            }   
+
+        }
+    else:
+        DEFAULT_FILE_STORAGE = 'oss_extra.storage.AliyunStorage'
+        THUMBNAIL_DEFAULT_STORAGE = 'oss_extra.storage.AliyunStorage'
+        #GRIDFS_DATABASE = 'mongodb_storage'
+        OSS_ACCESS_KEY_ID = 'bAHPulP6qvCmtEqk'
+        OSS_SECRET_ACCESS_KEY = 'VquojH5AO6oE0hmDzhJp9qq7iTzLyl'
+        OSS_HOST = 'oss.aliyuncs.com'
+
+        CACHES = {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+                'LOCATION': 'django_cache',
+                'TIMEOUT': 3600*24*30
+            }
+        }
+except:
+    pass
+
 
 TEMPLATE_CONTEXT_PROCESSORS = (
    "django.contrib.auth.context_processors.auth",
