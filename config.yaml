@@ -17,8 +17,8 @@ handle:
 - compress: if ( out_header["Use-Compress"] == "1") compress
 
 handlers:
-- url: /_static
-  static_dir: kinger/static
+- url: momory/static
+  static_dir: momory/static
   gzip: on
   
 cron:

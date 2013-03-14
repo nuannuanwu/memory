@@ -22,3 +22,6 @@ if settings.DEBUG:
     urlpatterns += patterns('django.views.static',
         (r'media/(?P<path>.*)', 'serve', {'document_root': settings.MEDIA_ROOT}),
     )
+
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+urlpatterns += staticfiles_urlpatterns()
