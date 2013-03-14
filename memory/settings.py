@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 PROJECT_DIR = os.path.abspath(os.path.dirname(APP_DIR))
+sys.path.insert(0, os.path.join(PROJECT_DIR, 'system'))
 #
 #GRAPPELLI_ADMIN_TITLE = u'我的足迹 - - 后台管理系统'
 #
