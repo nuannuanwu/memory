@@ -10,6 +10,8 @@ urlpatterns = patterns("memory.views.frontend",
      url(r'^$', "index", name='home'),
      url('^index/$', "index", name="home"),
      url('^test/$', "test_index", name="test"),
+     url('^testone/$', "test_one", name="test"),
+     url('^testtwo/$', "test_two", name="test"),
      
 )
 

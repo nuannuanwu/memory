@@ -16,3 +16,10 @@ def index(request, template_name="memory/memory_index.html"):
 def test_index(request, template_name="memory/test_index.html"):
     space = range(30)
     return render(request, template_name,{"space":space})
+
+def test_one(request, template_name="memory/test_one.html"):
+    space = range(30)
+    return render(request, template_name,{"space":space})
+def test_two(request, template_name="memory/test_two.html"):
+    space = range(30)
+    return render(request, template_name,{"space":space})
