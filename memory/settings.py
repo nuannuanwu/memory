@@ -246,7 +246,7 @@ THUMBNAIL_ALIASES = {
     '': {
         'mini': {'size': (48, 48), 'crop': True},
         'small': {'size': (64, 64)},
-        'normal': {'size': (250, 0), 'crop': True},
+        'normal': {'size': (150, 0), 'crop': True},
         'big': {'size': (384, 0), 'crop': True},
         "large": {'size':(650,0)},
         "avatar": {'size':(64,64)},
