@@ -1,3 +1,4 @@
+{% load pagination_tags memory_tags i18n%}
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,6 +57,9 @@
     </script>
 </head>
 <body>
+    {% autopaginate space 15 %}
+    <div id="pagination" style="display:none;">
+    {% paginate %}</div>
 <div class="content">
     <ul class="list1">
         <li><img src="http://www.cssha.com/wp-content/uploads/2012/05/1.jpg" alt=""><p></p></li>

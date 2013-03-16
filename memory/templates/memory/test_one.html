@@ -1,137 +1,128 @@
-﻿<!DOCTYPE html>
+﻿{% load pagination_tags memory_tags i18n%}
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>jquery demo</title>
-<link rel="stylesheet" href="{{ STATIC_URL }}css/base.css">
-
-<!--demo js-->
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery.masonry.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery.infinitescroll.min.js"></script>
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>demo</title>
+<link href="{{ STATIC_URL }}css/base.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+/* 背景色和背景图 */
+body{background-color:#fff;background-image:url(images/bg.png);background-repeat:repeat;}
+/* 侧栏：文字色和分割线颜色 */
+.b1{border-color:#96999D;}
+.c1,.c1 a{color:#96999D;}
+/* 侧栏：文字色hover色 */
+a.c1:hover,.c1 a:hover{color:#000;}
+/* 侧栏：博客名称色和hover色 */
+.c2,a.c2:hover{color:#444;}
+</style>
 </head>
 <body>
-<!--div class="ssNav">
-<ul class="sxo">
-<li class="cat-item cat-item-20"><a target="_blank" style="font-weight:800; font-size:20px;" title="首页" href="http://www.wufangbo.com/">DEMO</a></li>
-<li class="cat-item cat-item-5"><a target="_blank" title="css实例，css知识等，css资讯！" href="http://www.wufangbo.com/category/css/">css div</a></li>
-<li class="cat-item cat-item-5"><a target="_blank" title="查看 css3 html5 下的所有文章" href="http://www.wufangbo.com/category/css3-html5/">css3 html5</a></li>
-<li class="cat-item cat-item-5"><a target="_blank" title="查看 javascript 下的所有文章" href="http://www.wufangbo.com/category/javascript/">javascript</a></li>
-</ul>
-</div-->
-<!--script type="text/javascript">/*对联广告位*/ var cpro_id = 'u547073';</script><script src="http://cpro.baidu.com/cpro/ui/f.js" type="text/javascript"></script-->
-<!--div style="width:960px; height:90px; overflow:hidden; margin:10px auto 0;"><script type="text/javascript">/*960*60，创建于2011-6-30*/ var cpro_id = 'u524659';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script></div--> 
-<!--h1 class="tit-h1">jquery瀑布流插件实现无限滚动</h1--> 
-<div class="ddNav">
-<ul class="xdo">
-<li><a target="_blank" href="http://www.wufangbo.com/css-examples-list/">css</a></li>
-<li><a target="_blank" href="http://www.wufangbo.com/javascript-examples-list/">javaScript</a></li>
-<li><a target="_blank" class="active" href="http://www.wufangbo.com/jquery-examples-list/">jQuery</a></li>
-<li><a target="_blank" href="http://www.wufangbo.com/web-development-tools-list/">html</a></li>
-</ul>
-</div>
-<div class="sdCon"><div style="background:#f5f5f5; padding-bottom:20px; border:1px solid #d5d5d5; margin:0 auto;min-height:300px;height:auto!important;height:300px;">
-<!--div style="width:960px; height:90px; overflow:hidden;margin:0 auto 10px;"><script type="text/javascript">/*960*60，创建于2011-6-30*/ var cpro_id = 'u524659';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script></div--> 
-<!--demo html-->
-<div class="demo">
-  <div id="container" class="transitions-enabled infinite-scroll clearfix">
-    {% for i in space %}
-    <div class="box showpic">
-      <div class="picbox">
-        <a href="http://www.wufangbo.com/jquery-examples-list/" target="_blank"><img width="150" alt="jquery hover图片特效,鼠标滑过图片animate动画放大显示" class="txpic" src="{{thumb_url}}" style="display: block;"></a>
-      </div>
-      <p>jquery hover图片特效,鼠标滑过图片animate动画放大显示</p>
-      <div class="actions">
-        <div class="lefter"><a class="button white" href="#">评论</a></div>
-        <div class="righter"><a class="button white" href="#">喜欢</a><a class="button white" href="#">分享</a></div>
-      </div>
+<!-- 侧边栏 -->
+<!--div class="side">
+  <div class="sbox">
+    <div class="face">
+      <a href="#"><img src="images/logo.jpg"/></a>
     </div>
-    {% endfor %}
-  </div><!--container end-->
+    <h1 class="name c2"><a href="#" class="c2">文盲空间</a></h1>
+    <p class="info c1">
+    </p>
+    <div class="line b1">
+    </div>
+    <ul class="nav clear c1">
+      <li><a rel="nofollow" href="http://www.lofter.com/message/loftertxt">私信</a></li>
+      <li><a href="#">归档</a></li>
+      <li><a href="#">RSS</a></li>
+    </ul>
+    <div class="line b1">
+    </div>
 
-  <div id="page-nav"><a href="{% url test1_extra %}"></a></div><!--page-nav end-->
-
+    <h2 class="next_page" style="font-size:17px;">
+      <a href="ajax1.html">下一页→</a>
+    </h2>
+  </div>
+</div-->
+<!-- 内容 -->
+<div class="body clear">
+  <div class="list">
+    <ul class="clear" id="content">
+      <!-- 文字 -->
+      <!--li class="article post">
+      <a href="#" class="link">
+      <span class="text">
+      <strong></strong>
+      <em>LOFTER，既是一款简单随性的记录工具，又是一个推崇原创的创作平台。</em>
+      </span>
+      </a>
+      </li-->
+      <!-- 图片 -->
+    {% autopaginate space 15 %}
+    <div id="pagination" style="display:none;">
+    {% paginate %}</div>
+    {% include "memory/test_one_container.html" with page_data=page_data %} 
+    </ul>
+  </div>
 </div>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery.masonry.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
+$(function(){
   
-  var $container = $('#container');
-  
-  $container.imagesLoaded(function(){
-    $container.masonry({
-      itemSelector: '.box',
-      columnWidth: 5 //每两列之间的间隙为5像素
-    });
+var startHref ;
+  //对content使用masonry插件
+  $('#content').masonry({
+    itemSelector : '.post',
+    columnWidth : 251
   });
   
-  $container.infinitescroll({
-    navSelector  : '#page-nav',    // 选择的分页导航 
-    nextSelector : '#page-nav a',  // 选择的下一个链接到（第2页）
-    itemSelector : '.box',     // 选择检索所有项目
-    loading: {
-      finishedMsg: '没有更多的页面加载。',
-      img: 'images/loading.gif'
-    }
-  },function(newElements){
+  function next_page(){
     
-      // 隐藏新的项目，而他们正在加载
-      var $newElems = $( newElements ).css({ opacity: 0 });
+    //首先取得下一页的链接地址
     
-      // 确保的图像装载增加砖石布局
-      $newElems.imagesLoaded(function(){
+    var href=$("#pagination a.next").attr("href")
+    startHref = href;
+    //判断下一页的链接地址是否存在
+    if( href != undefined ){
       
-        // 元素展示准备
-        $newElems.animate({opacity:1});
-        console.log($newElems)
-        $container.masonry( 'appended', $newElems, true ); 
-      
-      });
+      //如果存在的话，用ajax获取数据
+      $.ajax({
+        type:"get",
+        url:href,
+        success:function(data){
+          console.log(data)
+          //将返回的数据进行处理，挑选出class是post的内容块
+          var $res=$(data).find(".post");
+          
+          //结合masonry插件，将内容append进ID是content的内容块中
+          $("#content").append( $res ).masonry( 'appended', $res );
+          
+          //newHref获取返回的内容中的下一页的链接地址
+          var newHref=$("#pagination a.next").attr("href");
+          //判断下一页地址是否存在，如果存在，替换当前页的链接地址。不存在，将当前页链接地址属性href移除，并替换内容为“下一页没有了”
+          if( newHref != undefined ){
+            //$(".next_page a").attr("href",newHref);
+          }
+        }
+      })
     }
-  );
-  
-  $('<a href="#" id="retop" style="">返回顶部</a>').appendTo('body').fadeOut().click(function(){
-    $(document).scrollTop(0);
-    $(this).fadeOut();
-    return false
-  });
-  var $retop = $('#retop');
-  function backTopLeft(){
-    var btLeft = $(window).width() / 2 + 478;
-    if (btLeft <= 950){
-      $retop.css({ 'left': 955 })
-    }else{
-      $retop.css({ 'left': btLeft }) 
-    }
+    
+    //返回false，使得点击进入新页面失效
+    return false;
   }
-  backTopLeft();
-  $(window).resize(backTopLeft);
-  $(window).scroll(function(){
-    if ($(document).scrollTop() === 0){
-      $retop.fadeOut()
-    }else{
-      $retop.fadeIn()
-    }
-    if ($.browser.msie && $.browser.version == 6.0 && $(document).scrollTop() !== 0){
-      $retop.css({ 'opacity': 1 })
-    } 
-  });
   
+      //首先给窗口绑定事件scroll
+  
+    
+  $(window).bind("scroll",function () {
+    console.log("scroll");
+    var clienth = document.documentElement.clientHeight;  //屏幕高度
+    var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //滚动高度
+    var scrollh = document.documentElement.scrollHeight;  //页面高度
+    if (clienth + scrollt >= scrollh - 20 ) {
+      next_page();
+    }
+  });
 });
 </script>
-
-</div></div>
-<!--div style="width:960px;height:90px; overflow:hidden; margin:10px auto;"><script type="text/javascript">/*960*60，创建于2011-6-30*/ var cpro_id = 'u524659';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script></div--> 
-
-<!--div class="ddback"><a target="_blank" class="active" href="">返回-jQuery实例列表</a></div-->
-<div class="ddfooter">
-<a title="memory" href="javascript:;" style="font-size:14px; background:none;">momory</a> <a rel="home" title="memory" href="javascripts:;">memory</a><br><p><a href="#">memory</a> | <a href="#">memory</a> | <a href="#">memory</a> | <a href="#">memory</a> <a href="#">memory</a> <a href="#">memory</a></p>
-</div>
-<div style="display:none;">
-<script type="text/javascript">
-var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9e39cba98375c61eaf783e7994bd039f' type='text/javascript'%3E%3C/script%3E"));
-</script>
-</div>
-</body> 
+</body>
 </html>

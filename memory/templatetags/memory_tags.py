@@ -481,13 +481,6 @@ def latest_tiles_by_date(context, year, month, day, max=4):
         max = None
     return tiles.filter(start_time__startswith=date)[:max]
 
-from userena.contrib.umessages.models import MessageContact
-@register.assignment_tag(takes_context=True)
-def quick_contact_list(context, count=4):
-    request = context.get('request')
-    queryset = MessageContact.objects.get_contacts_for(request.user)[:count]
-    #queryset = MessageContact.objects.get_contacts_for(request.user).filter(latest_message__sender_deleted_at__isnull=True)[:count]
-    return queryset
 
 
 @register.filter
