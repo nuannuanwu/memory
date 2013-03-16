@@ -18,18 +18,18 @@ def test_index(request, template_name="memory/test_index.html"):
     return render(request, template_name,{"space":space})
 
 def test_one(request, template_name="memory/test_one.html"):
-    space = range(150)
+    space = range(64)
     ctx = {}
-    page_data = range(15)
+    page_data = range(16)
     ctx['page_data'] = page_data
     ctx['space'] = space
     if request.is_ajax():
         page = int(request.GET.get("page",'1'))
-        start = (page - 1) * 15
-        end = page * 15
-        page_data = range(15)
+        start = (page - 1) * 16
+        end = page * 16
+        page_data = range(16)
         ctx['page_data'] = page_data
-        template_name = "kinger/tile_index_container.html"
+        template_name = "memory/test_one_container.html"
         return render(request, template_name, ctx)
     return render(request, template_name,ctx)
 def test_two(request, template_name="memory/test_two.html"):

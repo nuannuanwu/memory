@@ -45,6 +45,9 @@ a.c1:hover,.c1 a:hover{color:#000;}
 <!-- 内容 -->
 <div class="body clear">
   <div class="list">
+    {% autopaginate space 16 %}
+    <div id="pagination" style="display:none">
+    {% paginate %}</div>
     <ul class="clear" id="content">
       <!-- 文字 -->
       <!--li class="article post">
@@ -56,9 +59,7 @@ a.c1:hover,.c1 a:hover{color:#000;}
       </a>
       </li-->
       <!-- 图片 -->
-    {% autopaginate space 15 %}
-    <div id="pagination" style="display:none;">
-    {% paginate %}</div>
+    
     {% include "memory/test_one_container.html" with page_data=page_data %} 
     </ul>
   </div>
@@ -69,6 +70,9 @@ a.c1:hover,.c1 a:hover{color:#000;}
 $(function(){
   
 var startHref ;
+var page_start = 1
+var page_end = $("#pagination a.next").prev().text()
+var base_url = '{% url test1 %}'
   //对content使用masonry插件
   $('#content').masonry({
     itemSelector : '.post',
@@ -78,8 +82,15 @@ var startHref ;
   function next_page(){
     
     //首先取得下一页的链接地址
-    
+    if(page_start >= page_end){
+      console.log("下一页没有了")
+      $("#pagination a.next").html("下一页没有了").removeAttr("href")
+    }else{
+      page_start += 1
+      $("#pagination a.next").attr("href",base_url + "?page=" + page_start)
+    }
     var href=$("#pagination a.next").attr("href")
+    
     startHref = href;
     //判断下一页的链接地址是否存在
     if( href != undefined ){
@@ -89,23 +100,17 @@ var startHref ;
         type:"get",
         url:href,
         success:function(data){
-          console.log(data)
           //将返回的数据进行处理，挑选出class是post的内容块
-          var $res=$(data).find(".post");
+          //var $res=$(data).find(".post");
           
           //结合masonry插件，将内容append进ID是content的内容块中
-          $("#content").append( $res ).masonry( 'appended', $res );
+          $("#content").append( data ).masonry( 'appended', data );
           
-          //newHref获取返回的内容中的下一页的链接地址
-          var newHref=$("#pagination a.next").attr("href");
-          //判断下一页地址是否存在，如果存在，替换当前页的链接地址。不存在，将当前页链接地址属性href移除，并替换内容为“下一页没有了”
-          if( newHref != undefined ){
-            //$(".next_page a").attr("href",newHref);
-          }
+          //判断下一页地址是否存在，如果存在，替换当前页的链接地址。不存在，将当前页链接地址属性href移除，并替换内容为“下一页没有了
         }
       })
     }
-    
+  
     //返回false，使得点击进入新页面失效
     return false;
   }
