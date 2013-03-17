@@ -82,7 +82,7 @@ var base_url = '{% url test1 %}'
   function next_page(){
     
     //首先取得下一页的链接地址
-    if(page_start >= page_end){
+    if(page_start > page_end){
       console.log("下一页没有了")
       $("#pagination a.next").html("下一页没有了").removeAttr("href")
     }else{

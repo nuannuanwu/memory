@@ -8,11 +8,13 @@ admin.autodiscover()
 
 urlpatterns = patterns("memory.views.frontend",
      url(r'^$', "index", name='home'),
-     url('^index/$', "index", name="home"),
+     url('^index_test/$', "index_test", name="index_test"),
+     url('^index_test/undefined/$', "index_test", name="index_test"),
      url('^test/$', "test_index", name="test"),
      url('^testone/$', "test_one", name="test1"),
      url('^testone1/$', "test_one_extra", name="test1_extra"),
      url('^testtwo/$', "test_two", name="test2"),
+     url('^test3/$', "test3", name="test3"),
      
 )
 
