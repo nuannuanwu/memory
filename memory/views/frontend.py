@@ -44,10 +44,13 @@ def index_test(request, template_name="memory/memory_index.html"):
         print page,'ppppppppppp'
         space = range(90)
         category_list = []
-        for s in space:
-            category_list.append({'thumb_url':thumb_url,"title":s})
+#        for s in space:
+#            category_list.append({'thumb_url':thumb_url,"title":s})
         if page>3:
             category_list = []
+            return HttpResponse('')
+        template_name = "memory/memory_container.html"
+        return render(request, template_name, ctx)
         return HttpResponse(json.dumps(category_list))
     return render(request, template_name,ctx)
 

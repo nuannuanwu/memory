@@ -48,25 +48,14 @@ $(function(){
 			data: {page: page},
 			beforeSend: function(){ $("#loading").fadeIn(400); },
 			success: function(data){
-				data = $.parseJSON(data);
-				is_empty = isEmptyObject(data);
-				if(is_empty){
-					$("#stop").show();
+				if(data){
 					$("#loading").hide();
-					$("#stopload").val(1);
-				}else{
-					var html = "";
-					for(i=0;i<pagesize;i++) {
-						html += "<li class='hide'>";
-						html += "<img src="+data[i].thumb_url+" width='250'>";
-						html += "<p>"+data[i].title+"</p>";						
-						html += "</li>";
-					}
-					$("#loading").hide();
-					$("ul").append(html);
+					$("ul").append(data);
 					$("li").setwaterfall();
 					$(".hide").animate({opacity:1},2000);
-				}
+				}else{
+					$("#stopload").val(1);
+				}	
 			}
 		});
 	}	
@@ -77,9 +66,7 @@ $(function(){
 <body> 
 
 <ul>
-{% for i in page_data %}	
-<li id="b"><img src="{{thumb_url}}" style="width:250px"><p>pic</p></li>
-{% endfor %}
+	{% include "memory/memory_container.html" %} 
 </ul>
 <div style="display:none;background:#CCC;color:#333;margin:20px 0;height:30px;text-align:center;font:bold 15px/30px '宋体'" id="loading">努力加载中，请稍后...</div>
 <div style="display:none;background:#CCC;color:#333;margin:20px 0;height:30px;text-align:center;font:bold 15px/30px '宋体'" id="stop">没有可加载的内容了...</div>
