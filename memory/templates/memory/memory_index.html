@@ -1,3 +1,4 @@
+{% load pagination_tags memory_tags i18n%}
 <!DOCTYPE html> 
 <html> 
 <head> 
@@ -24,13 +25,22 @@ $(function(){
 		var clienth = document.documentElement.clientHeight;  //屏幕高度
 		var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //滚动高度
 		var scrollh = document.documentElement.scrollHeight;  //页面高度
-		if (clienth + scrollt >= scrollh - 20 ) {
+		if (clienth + scrollt >= scrollh - 20 && !$("#stopload").val()) {
 			jQuery.DataLoad();
 
 		}
 	});
-	
+	var a = {};
+
+	function isEmptyObject(obj){
+	  for (var x in obj){
+	    return false;
+	  }
+	  return true;
+	} 
+
 	jQuery.DataLoad = function(){
+		page++
 		$.ajax({
 			url: href,   //测试地址,返回JSON数据
 			type:"get",
@@ -39,19 +49,24 @@ $(function(){
 			beforeSend: function(){ $("#loading").fadeIn(400); },
 			success: function(data){
 				data = $.parseJSON(data);
-				console.log(data[0])
-			  //page++;
-			  var html = "";
-			  for(i=0;i<pagesize;i++) {
-				html += "<li class='hide'>";
-				html += "<img src="+data[i].thumb_url+" width='250'>";
-				html += "<p>"+data[i].title+"</p>";						
-				html += "</li>";
-			  }
-			    $("#loading").hide();
-				$("ul").append(html);
-				$("li").setwaterfall();
-				$(".hide").animate({opacity:1},2000);
+				is_empty = isEmptyObject(data);
+				if(is_empty){
+					$("#stop").show();
+					$("#loading").hide();
+					$("#stopload").val(1);
+				}else{
+					var html = "";
+					for(i=0;i<pagesize;i++) {
+						html += "<li class='hide'>";
+						html += "<img src="+data[i].thumb_url+" width='250'>";
+						html += "<p>"+data[i].title+"</p>";						
+						html += "</li>";
+					}
+					$("#loading").hide();
+					$("ul").append(html);
+					$("li").setwaterfall();
+					$(".hide").animate({opacity:1},2000);
+				}
 			}
 		});
 	}	
@@ -67,5 +82,7 @@ $(function(){
 {% endfor %}
 </ul>
 <div style="display:none;background:#CCC;color:#333;margin:20px 0;height:30px;text-align:center;font:bold 15px/30px '宋体'" id="loading">努力加载中，请稍后...</div>
+<div style="display:none;background:#CCC;color:#333;margin:20px 0;height:30px;text-align:center;font:bold 15px/30px '宋体'" id="stop">没有可加载的内容了...</div>
+<input type="hidden" id="stopload" value=''>
 </body>
 </html>

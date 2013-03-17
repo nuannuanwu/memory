@@ -32,16 +32,22 @@ def index(request, template_name="memory/index.html"):
 
 def index_test(request, template_name="memory/memory_index.html"):
     ctx = {}
+    space = range(90)
     profile = get_object_or_404(Profile, pk=1)
     thumb_url = profile.photo['normal'].url
     page_data = range(15)
     ctx['page_data'] = page_data
     ctx['thumb_url'] = thumb_url
+    ctx['space'] = space
     if request.is_ajax():
-        space = range(15)
+        page = int(request.GET.get("page",'0'))
+        print page,'ppppppppppp'
+        space = range(90)
         category_list = []
         for s in space:
             category_list.append({'thumb_url':thumb_url,"title":s})
+        if page>3:
+            category_list = []
         return HttpResponse(json.dumps(category_list))
     return render(request, template_name,ctx)
 
