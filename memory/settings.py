@@ -221,6 +221,7 @@ INSTALLED_APPS = (
     'oss_extra',
     'sae_extra',
     'pagination',
+    'manage',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
